@@ -169,14 +169,14 @@ function render() {
 }
 
 function initializeGameStates() {
-    for (let i = 1; i < gridWidth; i++) {
+    for (let i = 1; i <= gridWidth; i++) {
         borderPositions.top.push([i, 1])
         borderPositions.bottom.push([i, gridHeight])
     }
 
-    for (let i = 1; i < gridHeight; i++) {
-        borderPositions.left.push([1, i + 1])
-        borderPositions.right.push([gridWidth - 1, i])
+    for (let i = 1; i <= gridHeight; i++) {
+        borderPositions.left.push([1, i])
+        borderPositions.right.push([gridWidth, i])
     }
 
     const x = Math.floor(gridWidth / 2)
