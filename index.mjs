@@ -28,7 +28,7 @@ const UpKeys = ["up", "w", "k"]
 const DownKeys = ["down", "s", "j"]
 
 const gridWidth = 30
-const gridHeight = Math.floor(gridWidth / 2)
+const gridHeight = Math.round(gridWidth / 2)
 
 // game states 
 let snake = {
@@ -49,7 +49,7 @@ const borderPositions = {
     left: []
 }
 
-//start
+// start
 initializeGameStates()
 setUpTerminal()
 drawBorders()
@@ -138,7 +138,6 @@ function update() {
     // body collision 
     for (let i = 1; i < snake.body.length; i++) {
         const [x, y] = snake.body[i]
-
         if (snakeHeadX === x && snakeHeadY === y) {
             gameOver()
         }
@@ -156,7 +155,7 @@ function render() {
     console.clear()
     setColor(Color.YELLOW)
     process.stdout.cursorTo(1, 0)
-    process.stdout.write(`Score: ${snake.body.length - 1}        High Score: ${0}`)
+    process.stdout.write(`Score: ${snake.body.length - 1}    High Score: ${0}`)
     // process.stdout.write(`food x: ${food.x}, food y: ${food.y} --- `)
     // process.stdout.write(`snakeHead: ${snake.body[0][0]}, ${snake.body[0][1]} ---`)
     // process.stdout.write(`currentDirection: ${snake.currentDirection} ---`)
@@ -194,13 +193,14 @@ function render() {
     setColor(Color.GREEN)
     for (const [x, y] of snake.body) {
         process.stdout.cursorTo(x, y);
-        process.stdout.write("█");
+        process.stdout.write("██");
     }
 
     // render food
     setColor(Color.RED)
     process.stdout.cursorTo(food.x, food.y)
-    process.stdout.write("█");
+    process.stdout.write("██");
+    // process.stdout.write("🍎");
 
     drawBorders()
 }
@@ -222,12 +222,50 @@ function initializeGameStates() {
 }
 
 function drawBorders() {
-    for (const direction in borderPositions) {
-        for (const [x, y] of borderPositions[direction]) {
-            process.stdout.cursorTo(x, y)
-            setColor(Color.BLUE)
-            process.stdout.write("█")
+    let char = ""
+
+    setColor(Color.BLUE)
+
+    for (const [x, y] of borderPositions.left) {
+        char = "│"
+        process.stdout.cursorTo(x, y)
+        process.stdout.write(char)
+    }
+
+    for (const [x, y] of borderPositions.right) {
+        char = "│"
+        process.stdout.cursorTo(x, y)
+        process.stdout.write(char)
+    }
+
+    for (let i = 0; i < borderPositions.top.length; i++) {
+        const [x, y] = borderPositions.top[i]
+
+        if (i === 0) {
+            char = "┌"
+        } else if (i === borderPositions.top.length - 1) {
+            char = "┐"
+        } else {
+            char = "─"
         }
+
+        process.stdout.cursorTo(x, y)
+        process.stdout.write(char)
+    }
+
+    for (let i = 0; i < borderPositions.bottom.length; i++) {
+        const [x, y] = borderPositions.bottom[i]
+
+        if (i === 0) {
+            char = "└"
+        } else if (i === borderPositions.bottom.length - 1) {
+            char = "┘"
+        } else {
+            char = "─"
+        }
+
+        process.stdout.cursorTo(x, y)
+        process.stdout.write(char)
     }
 }
 
