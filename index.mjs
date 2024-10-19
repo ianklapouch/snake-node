@@ -54,39 +54,76 @@ initializeGameStates()
 setUpTerminal()
 drawBorders()
 
-setInterval(() => { //game loop
-    update();
-}, 200)
+// game loop
+let horizontalInterval
+let verticalInterval
+
+const horizontalSpeed = 75
+const verticalSpeed = 150
+
+function startGameLoop() {
+    if (horizontalInterval) clearInterval(horizontalInterval);
+    if (verticalInterval) clearInterval(verticalInterval);
+
+    horizontalInterval = setInterval(() => {
+        if (snake.currentDirection === Direction.LEFT || snake.currentDirection === Direction.RIGHT) {
+            update();
+        }
+    }, horizontalSpeed);
+
+    verticalInterval = setInterval(() => {
+        if (snake.currentDirection === Direction.UP || snake.currentDirection === Direction.DOWN) {
+            update();
+        }
+    }, verticalSpeed);
+}
 
 process.stdin.on("keypress", (_, key) => {
     if (key.name === "escape" || (key.ctrl && key.name === "c")) {
         gameOver()
     }
 
+    let directionChanged = false
+
     if (RightKeys.includes(key.name)) {
         if (snake.currentDirection !== Direction.LEFT) {
             snake.currentDirection = Direction.RIGHT
+            directionChanged = true
         }
     }
 
     if (LeftKeys.includes(key.name)) {
         if (snake.currentDirection !== Direction.RIGHT) {
             snake.currentDirection = Direction.LEFT
+            directionChanged = true
         }
     }
 
     if (UpKeys.includes(key.name)) {
         if (snake.currentDirection !== Direction.DOWN) {
             snake.currentDirection = Direction.UP
+            directionChanged = true
         }
     }
 
     if (DownKeys.includes(key.name)) {
         if (snake.currentDirection !== Direction.UP) {
             snake.currentDirection = Direction.DOWN
+            directionChanged = true
         }
     }
+
+    if (directionChanged) {
+        forceRender()
+    }
 })
+
+function forceRender() {
+    clearInterval(horizontalInterval)
+    clearInterval(verticalInterval)
+    startGameLoop()
+    update()
+}
 
 function update() {
     const snakeHeadX = snake.body[0][0]
@@ -237,5 +274,5 @@ function setColor(color) {
     process.stdout.write(color)
 }
 
+startGameLoop()
 update()
-
