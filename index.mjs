@@ -80,7 +80,7 @@ function startGameLoop() {
 
 process.stdin.on("keypress", (_, key) => {
     if (key.name === "escape" || (key.ctrl && key.name === "c")) {
-        gameOver()
+        exit()
     }
 
     let directionChanged = false
@@ -118,9 +118,13 @@ process.stdin.on("keypress", (_, key) => {
     }
 })
 
-function forceRender() {
+function clearGameLoop() {
     clearInterval(horizontalInterval)
     clearInterval(verticalInterval)
+}
+
+function forceRender() {
+    clearGameLoop()
     startGameLoop()
     update()
 }
@@ -200,6 +204,11 @@ function render() {
 }
 
 function initializeGameStates() {
+    borderPositions.top = []
+    borderPositions.bottom = []
+    borderPositions.left = []
+    borderPositions.right = []
+
     for (let i = 1; i <= gridWidth; i++) {
         borderPositions.top.push([i, 1])
         borderPositions.bottom.push([i, gridHeight])
@@ -212,6 +221,9 @@ function initializeGameStates() {
 
     const x = Math.floor(gridWidth / 2)
     const y = Math.floor(gridHeight / 2)
+
+    snake.body = []
+    snake.currentDirection = ""
     snake.body.push([x, y])
 }
 
@@ -339,7 +351,7 @@ function setUpTerminal() {
     process.stdout.write("\x1b[?25l")
 }
 
-function gameOver() {
+function exit() {
     // switch back to regular terminal screen
     process.stdout.write("\x1b[?1049l")
 
@@ -347,6 +359,14 @@ function gameOver() {
     process.stdout.write("\x1b[?25h")
 
     process.exit()
+}
+
+function gameOver() {
+    clearGameLoop()
+    initializeGameStates()
+    setUpTerminal()
+    drawBorders()
+    startGameLoop()
 }
 
 function generateFood() {
