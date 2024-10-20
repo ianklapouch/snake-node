@@ -153,13 +153,7 @@ function update() {
 
 function render() {
     console.clear()
-    setColor(Color.YELLOW)
-    process.stdout.cursorTo(1, 0)
-    process.stdout.write(`Score: ${snake.body.length - 1}    High Score: ${0}`)
-    // process.stdout.write(`food x: ${food.x}, food y: ${food.y} --- `)
-    // process.stdout.write(`snakeHead: ${snake.body[0][0]}, ${snake.body[0][1]} ---`)
-    // process.stdout.write(`currentDirection: ${snake.currentDirection} ---`)
-    // process.stdout.write(`size: ${snake.body.length} ---`)
+    drawInfo()
 
     const snakeHead = snake.body[0]
     let newSnakeHead
@@ -219,6 +213,70 @@ function initializeGameStates() {
     const x = Math.floor(gridWidth / 2)
     const y = Math.floor(gridHeight / 2)
     snake.body.push([x, y])
+}
+
+function drawInfo() {
+    setColor(Color.YELLOW)
+
+    // score
+    process.stdout.cursorTo(2, 0)
+    process.stdout.write(`SCORE: ${snake.body.length - 1}      HIGH SCORE: ${0}`)
+
+    // controls
+    const constrolsInfoX = gridWidth + 2
+    const constrolsInfoY = 2
+
+    process.stdout.cursorTo(constrolsInfoX, constrolsInfoY)
+    process.stdout.write("CONTROLS:")
+
+    process.stdout.cursorTo(constrolsInfoX + 2, constrolsInfoY + 2)
+    process.stdout.write("MOVE:")
+
+    process.stdout.cursorTo(constrolsInfoX + 5, constrolsInfoY + 4)
+    process.stdout.write("↑")
+
+    process.stdout.cursorTo(constrolsInfoX + 3, constrolsInfoY + 5)
+    process.stdout.write("←")
+
+    process.stdout.cursorTo(constrolsInfoX + 5, constrolsInfoY + 5)
+    process.stdout.write("↓")
+
+    process.stdout.cursorTo(constrolsInfoX + 7, constrolsInfoY + 5)
+    process.stdout.write("→")
+
+    process.stdout.cursorTo(constrolsInfoX + 15, constrolsInfoY + 4)
+    process.stdout.write("W")
+
+    process.stdout.cursorTo(constrolsInfoX + 13, constrolsInfoY + 5)
+    process.stdout.write("A")
+
+    process.stdout.cursorTo(constrolsInfoX + 15, constrolsInfoY + 5)
+    process.stdout.write("S")
+
+    process.stdout.cursorTo(constrolsInfoX + 17, constrolsInfoY + 5)
+    process.stdout.write("D")
+
+    process.stdout.cursorTo(constrolsInfoX + 25, constrolsInfoY + 4)
+    process.stdout.write("K")
+
+    process.stdout.cursorTo(constrolsInfoX + 23, constrolsInfoY + 5)
+    process.stdout.write("J")
+
+    process.stdout.cursorTo(constrolsInfoX + 25, constrolsInfoY + 5)
+    process.stdout.write("H")
+
+    process.stdout.cursorTo(constrolsInfoX + 27, constrolsInfoY + 5)
+    process.stdout.write("L")
+
+    // exit
+    process.stdout.cursorTo(constrolsInfoX + 2, constrolsInfoY + 7)
+    process.stdout.write("EXIT:")
+
+    process.stdout.cursorTo(constrolsInfoX + 3, constrolsInfoY + 9)
+    process.stdout.write("CTRL + C")
+
+    process.stdout.cursorTo(constrolsInfoX + 23, constrolsInfoY + 9)
+    process.stdout.write("ESC")
 }
 
 function drawBorders() {
