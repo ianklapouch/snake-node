@@ -282,6 +282,12 @@ function setUpTerminal() {
 }
 
 function gameOver() {
+    // switch back to regular terminal screen
+    process.stdout.write("\x1b[?1049l")
+
+    // restore cursor
+    process.stdout.write("\x1b[?25h")
+
     process.exit()
 }
 
